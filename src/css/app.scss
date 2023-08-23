@@ -1,5 +1,70 @@
+@import './reset.scss';
+@import './mixins/screens.scss';
 @import './fonts.scss';
 
+:root {
+  --primary: #368138;
+  --primary2: #79AE69;
+  --white: #ffffff;
+  --black: #000000;
+}
+
 body {
-  background: yellow;
+  background: var(--white);
+  font-family: 'Montserrat';
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--black);
+}
+
+.h1, h1 {
+  font-weight: 700;
+  font-size: 56px;
+  line-height: normal;
+}
+
+.h2, h2 {
+  color: var(--primary);
+  font-size: 44px;
+  font-weight: bold;
+  line-height: normal;
+}
+
+.h3, h3 {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.h4, h4 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.wrapper {
+  max-width: 1340px;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  @include screen($lg) {
+    .wrapper {
+      max-width: 1100px;
+    }
+  };
+
+  @include screen($md) {
+    .wrapper {
+      max-width: 900px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  };
+
+  @include screen($sm) {
+    .wrapper {
+      max-width: 700px;
+    }
+  };
 }

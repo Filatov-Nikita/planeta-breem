@@ -4,17 +4,46 @@ const sass = require('gulp-sass')(require('sass'));
 const pugCompiler = require('gulp-pug');
 const browserSync = require('browser-sync').create();
 const del = require('del');
+const babel = require('gulp-babel');
+const minify = require('gulp-babel-minify');
+const imagemin = require('gulp-imagemin');
+const imageminPngquant = require('imagemin-pngquant');
 
 function clean() {
   return del([ './dist/*/' ]);
 }
 
 function fonts() {
-  return src('./src/assets/fonts/**').pipe(dest('./dist/assets/fonts'));
+  return src('./src/assets/fonts/**')
+  .pipe(dest('./dist/assets/fonts'));
 }
 
-function images() {
-  return src('./src/assets/images/**').pipe(dest('./dist/assets/images'));
+function createImages(prod = false) {
+  return function images() {
+    const flow = src('./src/assets/images/**/*{.jpg,png,svg}');
+
+    if(prod) {
+      flow.pipe(imagemin([
+        imagemin.mozjpeg({ quality: 80, progressive: true }),
+        imageminPngquant({ quality: 80, speed: 7 })
+      ]));
+    }
+
+    flow.pipe(dest('./dist/assets/images'))
+    .pipe(browserSync.stream());
+
+    return flow;
+  }
+}
+
+function js() {
+  return src('./src/js/**/*.js')
+  .pipe(babel({
+    presets: ['@babel/env']
+  }))
+  .pipe(minify())
+  .pipe(dest('./dist/js'))
+  .pipe(browserSync.stream());
 }
 
 function styles() {
@@ -25,9 +54,10 @@ function styles() {
 }
 
 function pug() {
-  return src('./src/pug/**/*.pug')
+  return src('./src/pug/*.pug')
   .pipe(pugCompiler())
-  .pipe(dest('./dist'));
+  .pipe(dest('./dist'))
+  .pipe(browserSync.stream());
 }
 
 function server() {
@@ -38,11 +68,13 @@ function server() {
   });
 
   watch('./src/css/**/*.scss', series(styles));
-  watch('./src/pug/**/*.pug', series(pug)).on('change', browserSync.reload);
+  watch('./src/assets/images/**', series(createImages(false)));
+  watch('./src/js/**/*.js', series(js));
+  watch('./src/pug/**/*.pug', series(pug));
 }
 
-const serve = series(clean, fonts, images, styles, pug, server);
-const build = series(clean, fonts, images, styles, pug);
+const serve = series(clean, fonts, createImages(false), js, styles, pug, server);
+const build = series(clean, fonts, createImages(true), js, styles, pug);
 
 module.exports = {
   styles,

@@ -1,0 +1,163 @@
+.headerBlock {
+  background-image: url('/assets/images/main-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding-top: 34px;
+  padding-bottom: 60px;
+
+  @include screen($md) {
+    min-height: auto;
+    padding-bottom: 80px;
+  }
+
+  @include screen($sm) {
+    min-height: auto;
+    padding-bottom: 100px;
+  }
+
+  &__header {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+
+    @include screen($sm) {
+      display: none;
+    }
+  }
+
+  &__burger {
+    display: none;
+    @include screen($sm) {
+      display: block;
+    }
+  }
+
+  &__burger-btn {
+    display: block;
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    outline: none;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-image: url('/assets/images/icons/burger.svg');
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    gap: 25px;
+  }
+
+  &__link {
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  &__logo {
+    width: 185px;
+    flex-shrink: 0;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__text {
+    padding-top: 130px;
+    color: var(--white);
+    max-width: 660px;
+
+    @include screen($lg) {
+      padding-top: 150px;
+    }
+
+    @include screen($md) {
+      padding-top: 80px;
+    }
+
+    @include screen($sm) {
+      padding-top: 60px;
+      max-width: 300px;
+    }
+  }
+
+  &__title {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    @include screen($sm) {
+      font-size: 16px;
+    }
+  }
+}
+
+
+.modalNavBlock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--primary2);
+  z-index: 9000;
+  display: none;
+  padding: 15px 30px;
+
+  &--showed {
+    @include screen($sm) {
+      display: block;
+    }
+  }
+
+  &__nav {
+    padding-top: 30px;
+  }
+
+  &__link {
+    display: block;
+    color: var(--block);
+    font-weight: 600;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  &__btn {
+    display: block;
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    outline: none;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-image: url('/assets/images/icons/close.svg');
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+}

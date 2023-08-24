@@ -20,16 +20,17 @@ function fonts() {
 
 function createImages(prod = false) {
   return function images() {
-    const flow = src('./src/assets/images/**/*{.jpg,png,svg}');
+    let flow = src('./src/assets/images/**/*{.jpg,png,svg}');
 
     if(prod) {
-      flow.pipe(imagemin([
+      flow = flow.pipe(imagemin([
         imagemin.mozjpeg({ quality: 80, progressive: true }),
-        imageminPngquant({ quality: 80, speed: 7 })
+        imageminPngquant({ quality: [0.7, 0.8], speed: 7 })
       ]));
     }
 
-    flow.pipe(dest('./dist/assets/images'))
+    flow = flow
+    .pipe(dest('./dist/assets/images'))
     .pipe(browserSync.stream());
 
     return flow;
@@ -48,7 +49,7 @@ function js() {
 
 function styles() {
   return src('./src/css/app.scss')
-  .pipe(sass())
+  .pipe(sass({ outputStyle: 'compressed' }))
   .pipe(dest('./dist/css'))
   .pipe(browserSync.stream());
 }
@@ -80,5 +81,6 @@ module.exports = {
   styles,
   pug,
   build,
-  default: serve
+  default: serve,
+  images: createImages(true)
 };

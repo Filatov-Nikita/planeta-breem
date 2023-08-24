@@ -8,6 +8,8 @@ const babel = require('gulp-babel');
 const minify = require('gulp-babel-minify');
 const imagemin = require('gulp-imagemin');
 const imageminPngquant = require('imagemin-pngquant');
+const cleanCSS = require('gulp-clean-css');
+const gcmq = require('gulp-group-css-media-queries');
 
 function clean() {
   return del([ './dist/*/' ]);
@@ -49,7 +51,9 @@ function js() {
 
 function styles() {
   return src('./src/css/app.scss')
-  .pipe(sass({ outputStyle: 'compressed' }))
+  .pipe(sass())
+  .pipe(gcmq())
+  .pipe(cleanCSS())
   .pipe(dest('./dist/css'))
   .pipe(browserSync.stream());
 }

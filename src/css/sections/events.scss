@@ -20,6 +20,10 @@
     max-width: 640px;
     margin: 0 auto;
     line-height: 1.35;
+
+    @include screen($md) {
+      max-width: 580px;
+    };
   }
 
   &__items {
